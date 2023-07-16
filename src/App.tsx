@@ -5,7 +5,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/:id" Component={Page} />
+        <Route path="/live/:id" Component={Page} />
       </Routes>
     </Router>
   );
