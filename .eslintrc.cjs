@@ -22,4 +22,5 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
   },
+  ignorePatterns: ['.eslintrc.cjs', 'vite.config.ts'],
 };

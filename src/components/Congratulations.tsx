@@ -15,7 +15,7 @@ export default function xibao() {
     >
       <div
         style={{
-          fontSize: '3em',
+          fontSize: '40px',
           fontWeight: '600',
         }}
       >

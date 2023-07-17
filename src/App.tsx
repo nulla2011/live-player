@@ -1,5 +1,5 @@
-import Page from './Page';
-import Congratulations from './Congratulations';
+import Page from './components/StaticPlayer';
+import Congratulations from './components/Congratulations';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
