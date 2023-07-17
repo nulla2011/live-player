@@ -1,25 +1,11 @@
-export default function xibao() {
+import { useState } from 'react';
+import style from './Congratulations.module.css';
+export default function Xibao() {
+  const [title, setTitle] = useState('404 NOT FOUND');
   return (
-    <div
-      style={{
-        backgroundImage: 'url("https://001.moe/asset/xibao/bg.png")',
-        backgroundSize: 'contain',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        height: '100vh',
-        width: '100vw',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <div
-        style={{
-          fontSize: '40px',
-          fontWeight: '600',
-        }}
-      >
-        ♬月火水木金土日♬<br></br>♬毎日が Holiday♬
+    <div className={style.bg}>
+      <div className={style.title} onClick={() => setTitle('♬月火水木金土日♬\n♬毎日がHoliday♬')}>
+        {title}
       </div>
     </div>
   );

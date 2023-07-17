@@ -1,10 +1,19 @@
 import Artplayer from 'artplayer';
-import Aplayer from './ArtPlayer.js';
 import flvjs from 'flv.js';
 import Hls from 'hls.js';
 import artplayerPluginHlsQuality from 'artplayer-plugin-hls-quality';
 import { isFlv, isHls } from '../utils';
 import { useParams } from 'react-router-dom';
+
+interface patchedArtplayer extends Artplayer {
+  flv: { destroy: () => void };
+  hls: { destroy: () => void };
+}
+interface quality {
+  html: string;
+  url: string;
+  default?: boolean;
+}
 
 const playFlv = (video: HTMLMediaElement, url: string, art: patchedArtplayer) => {
   if (flvjs.isSupported()) {
@@ -32,16 +41,8 @@ const playM3u8 = (video: HTMLMediaElement, url: string, art: patchedArtplayer) =
     art.notice.show = 'Unsupported playback format: m3u8';
   }
 };
-interface patchedArtplayer extends Artplayer {
-  flv: { destroy: () => void };
-  hls: { destroy: () => void };
-}
-interface quality {
-  html: string;
-  url: string;
-  default?: boolean;
-}
-export default function Page() {
+
+export default () => {
   const { id } = useParams();
   const env = import.meta.env;
   const keyList: string[] = [];
@@ -51,22 +52,19 @@ export default function Page() {
     }
   }
   const quality: quality[] = [];
-  let maxQuality = 0;
   keyList
     .filter((key) => key.startsWith('VITE_URL_' + id! + '_'))
     .forEach((key) => {
-      const q = Number(key.split('_')[3]);
-      if (q > maxQuality) maxQuality = q;
       quality.push({
-        html: String(q) + 'P',
+        html: key.split('_')[3] + 'P',
         url: env[key] as string,
       });
     });
   let url = '';
   if (quality.length > 0) {
-    const max = quality.find((q) => q.html === String(maxQuality) + 'P')!;
-    url = max.url;
-    max.default = true;
+    quality.sort((a, b) => parseInt(b.html) - parseInt(a.html));
+    url = quality[0].url;
+    quality[0].default = true;
   }
   if (keyList.includes('VITE_URL_' + id!)) {
     url = env['VITE_URL_' + id!] as string;
@@ -77,13 +75,14 @@ export default function Page() {
     // type: isHls(url) ? 'm3u8' : isFlv(url) ? 'flv' : '',
     customType: isHls(url) ? { m3u8: playM3u8 } : isFlv(url) ? { flv: playFlv } : {},
     pip: true,
-    autoMini: true,
     screenshot: true,
     setting: true,
     fullscreen: true,
     fullscreenWeb: true,
     theme: '#23ade5',
+    volume: 1,
     lock: true,
+    autoOrientation: true,
     autoplay: true,
     isLive: true,
     // moreVideoAttr: {
@@ -104,18 +103,5 @@ export default function Page() {
       }),
     ],
   };
-  return (
-    <div>
-      <Aplayer
-        option={option}
-        style={{
-          width: '100vw',
-          height: '100vh',
-          margin: '0',
-          overflow: 'hidden',
-        }}
-        getInstance={(art) => console.info(art)}
-      />
-    </div>
-  );
-}
+  return option;
+};

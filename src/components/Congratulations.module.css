@@ -1,0 +1,19 @@
+.bg {
+  background-image: url('https://001.moe/asset/xibao/bg.png');
+  background-color: black;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100%;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.title {
+  font-size: 45px;
+  font-weight: 600;
+  color: red;
+  white-space: pre-line;
+  cursor: pointer;
+}
