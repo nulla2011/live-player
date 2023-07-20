@@ -61,13 +61,13 @@ export default () => {
       });
     });
   let url = '';
+  if (keyList.includes('VITE_URL_' + id!)) {
+    url = env['VITE_URL_' + id!] as string;
+  }
   if (quality.length > 0) {
     quality.sort((a, b) => parseInt(b.html) - parseInt(a.html));
     url = quality[0].url;
     quality[0].default = true;
-  }
-  if (keyList.includes('VITE_URL_' + id!)) {
-    url = env['VITE_URL_' + id!] as string;
   }
   const option = {
     url,
@@ -82,8 +82,10 @@ export default () => {
     theme: '#23ade5',
     volume: 1,
     lock: true,
-    autoOrientation: true,
     autoplay: true,
+    lang: navigator.language.toLowerCase(),
+    autoOrientation: true,
+    backdrop: true,
     isLive: true,
     // moreVideoAttr: {
     //   crossOrigin: 'anonymous',
@@ -95,8 +97,13 @@ export default () => {
         // Show quality in setting
         setting: true,
         // Get the resolution text from level
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        getResolution: (level) => (level.height as string) + 'P',
+        getResolution: (level) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          const height = level.height as number;
+          if (height && height > 0) {
+            return String(height) + 'P';
+          } else return 'Source';
+        },
         // I18n
         title: 'Quality',
         auto: 'Auto',
