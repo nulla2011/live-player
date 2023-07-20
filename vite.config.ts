@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { build, defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { Plugin as importToCDN } from 'vite-plugin-cdn-import';
@@ -28,4 +28,13 @@ export default defineConfig({
       ],
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        assetFileNames: (assetInfo) => 'assets/live-[name]-[hash][extname]',
+        entryFileNames: 'assets/live-[name]-[hash].js',
+        chunkFileNames: 'assets/live-[name]-[hash].js',
+      },
+    },
+  },
 });

@@ -84,6 +84,7 @@ export default () => {
     lock: true,
     autoplay: true,
     lang: navigator.language.toLowerCase(),
+    mutex: true,
     autoOrientation: true,
     backdrop: true,
     isLive: true,
