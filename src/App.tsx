@@ -7,6 +7,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/live/:id" Component={StaticLivePlayer} />
+        <Route path="/:id" Component={StaticLivePlayer} />
         <Route path="*" Component={Congratulations} />
       </Routes>
     </Router>

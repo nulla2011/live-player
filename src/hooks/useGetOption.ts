@@ -56,7 +56,7 @@ export default () => {
     .filter((key) => key.startsWith('VITE_URL_' + id! + '_'))
     .forEach((key) => {
       quality.push({
-        html: key.split('_')[3] + 'P',
+        html: key.split('_')[3],
         url: env[key] as string,
       });
     });
