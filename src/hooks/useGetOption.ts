@@ -61,8 +61,10 @@ export default () => {
       });
     });
   let url = '';
+  let singleStream = false;
   if (keyList.includes('VITE_URL_' + id!)) {
     url = env['VITE_URL_' + id!] as string;
+    singleStream = true;
   }
   if (quality.length > 0) {
     quality.sort((a, b) => parseInt(b.html) - parseInt(a.html));
@@ -94,7 +96,7 @@ export default () => {
     plugins: [
       artplayerPluginHlsQuality({
         // Show quality in control
-        control: true,
+        control: singleStream,
         // Show quality in setting
         setting: true,
         // Get the resolution text from level
