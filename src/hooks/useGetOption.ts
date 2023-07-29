@@ -1,19 +1,9 @@
-import Artplayer from 'artplayer';
 import flvjs from 'flv.js';
 import Hls from 'hls.js';
 import artplayerPluginHlsQuality from 'artplayer-plugin-hls-quality';
 import { isFlv, isHls } from '../utils';
 import { useParams } from 'react-router-dom';
-
-interface patchedArtplayer extends Artplayer {
-  flv: { destroy: () => void };
-  hls: { destroy: () => void };
-}
-interface quality {
-  html: string;
-  url: string;
-  default?: boolean;
-}
+import artplayPluginQuality from '../plugin/artplayPluginQuality';
 
 const playFlv = (video: HTMLMediaElement, url: string, art: patchedArtplayer) => {
   if (flvjs.isSupported()) {
@@ -69,11 +59,11 @@ export default () => {
   if (quality.length > 0) {
     quality.sort((a, b) => parseInt(b.html) - parseInt(a.html));
     url = quality[0].url;
-    quality[0].default = true;
+    // quality[0].default = true;
   }
   const option = {
     url,
-    ...(quality.length > 0 ? { quality } : {}),
+    // ...(quality.length > 0 ? { quality } : {}),
     // type: isHls(url) ? 'm3u8' : isFlv(url) ? 'flv' : '',
     customType: isHls(url) ? { m3u8: playM3u8 } : isFlv(url) ? { flv: playFlv } : {},
     pip: true,
@@ -111,6 +101,7 @@ export default () => {
         title: 'Quality',
         auto: 'Auto',
       }),
+      ...(quality.length > 0 ? [artplayPluginQuality(quality, id!)] : []),
     ],
   };
   return option;
