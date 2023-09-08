@@ -1,9 +1,8 @@
 import flvjs from 'flv.js';
 import Hls from 'hls.js';
 import artplayerPluginHlsQuality from 'artplayer-plugin-hls-quality';
-import { isFlv, isHls } from '../utils';
-import { useParams } from 'react-router-dom';
-import artplayPluginQuality from '../plugin/artplayPluginQuality';
+import { isFlv, isHls } from '../../utils';
+import artplayPluginQuality from '../../plugin/artplayPluginQuality';
 
 const playFlv = (video: HTMLMediaElement, url: string, art: patchedArtplayer) => {
   if (flvjs.isSupported()) {
@@ -32,18 +31,21 @@ const playM3u8 = (video: HTMLMediaElement, url: string, art: patchedArtplayer) =
   }
 };
 
-export default () => {
-  const { id } = useParams();
-  const env = import.meta.env;
+export default (id: string) => {
+  console.log(id);
+  const env = process.env;
   const keyList: string[] = [];
   for (const key in env) {
-    if (Object.prototype.hasOwnProperty.call(env, key) && key.startsWith('VITE_URL_' + id!)) {
+    if (
+      Object.prototype.hasOwnProperty.call(env, key) &&
+      key.startsWith('NEXT_PUBLIC_URL_' + id!)
+    ) {
       keyList.push(key);
     }
   }
   const quality: quality[] = [];
   keyList
-    .filter((key) => key.startsWith('VITE_URL_' + id! + '_'))
+    .filter((key) => key.startsWith('NEXT_PUBLIC_URL_' + id! + '_'))
     .forEach((key) => {
       quality.push({
         html: key.split('_')[3],
@@ -52,8 +54,8 @@ export default () => {
     });
   let url = '';
   let singleStream = false;
-  if (keyList.includes('VITE_URL_' + id!)) {
-    url = env['VITE_URL_' + id!] as string;
+  if (keyList.includes('NEXT_PUBLIC_URL_' + id!)) {
+    url = env['NEXT_PUBLIC_URL_' + id!] as string;
     singleStream = true;
   }
   if (quality.length > 0) {
@@ -91,7 +93,6 @@ export default () => {
         setting: true,
         // Get the resolution text from level
         getResolution: (level) => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           const height = level.height as number;
           if (height && height > 0) {
             return String(height) + 'P';

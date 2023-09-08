@@ -1,4 +1,4 @@
-import StaticLivePlayer from './components/StaticLivePlayer';
+import StaticLivePlayer from './app/[id]/StaticLivePlayer';
 import Congratulations from './components/Congratulations';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
