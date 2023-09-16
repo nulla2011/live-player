@@ -1,7 +1,7 @@
 import flvjs from 'flv.js';
 import Hls from 'hls.js';
 import artplayerPluginHlsQuality from 'artplayer-plugin-hls-quality';
-import { isFlv, isHls } from '../utils';
+import { isFlv, isHls, getQuery } from '../utils';
 import { useParams } from 'react-router-dom';
 import artplayPluginQuality from '../plugin/artplayPluginQuality';
 
@@ -17,10 +17,40 @@ const playFlv = (video: HTMLMediaElement, url: string, art: patchedArtplayer) =>
     art.notice.show = 'Unsupported playback format: flv';
   }
 };
-const playM3u8 = (video: HTMLMediaElement, url: string, art: patchedArtplayer) => {
+const playHls = (video: HTMLMediaElement, url: string, art: patchedArtplayer) => {
   if (Hls.isSupported()) {
     if (art.hls) art.hls.destroy();
     const hls = new Hls();
+    hls.loadSource(url);
+    hls.attachMedia(video);
+    art.hls = hls;
+    art.on('destroy', () => hls.destroy());
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = url;
+  } else {
+    art.notice.show = 'Unsupported playback format: m3u8';
+  }
+};
+// class Loader extends Hls.DefaultConfig.loader {
+//   constructor(config: HlsConfig) {
+//     super(config);
+//     const load = this.load.bind(this);
+//     this.load = (context, config, callbacks) => {
+//       console.log(context.url);
+//       load(context, config, callbacks);
+//     };
+//   }
+// }
+const playHlsWithParams = (video: HTMLMediaElement, url: string, art: patchedArtplayer) => {
+  if (Hls.isSupported()) {
+    if (art.hls) art.hls.destroy();
+    const hls = new Hls({
+      xhrSetup: (xhr, xhrUrl) => {
+        if (!xhrUrl.includes('?')) {
+          xhr.open('GET', xhrUrl + getQuery(url));
+        }
+      },
+    });
     hls.loadSource(url);
     hls.attachMedia(video);
     art.hls = hls;
@@ -65,7 +95,7 @@ export default () => {
     url,
     // ...(quality.length > 0 ? { quality } : {}),
     // type: isHls(url) ? 'm3u8' : isFlv(url) ? 'flv' : '',
-    customType: isHls(url) ? { m3u8: playM3u8 } : isFlv(url) ? { flv: playFlv } : {},
+    customType: isHls(url) ? { m3u8: playHlsWithParams } : isFlv(url) ? { flv: playFlv } : {},
     pip: true,
     screenshot: true,
     setting: true,

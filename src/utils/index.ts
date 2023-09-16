@@ -4,3 +4,6 @@ export const isHls = (url: string) => {
 export const isFlv = (url: string) => {
   return /\.flv/.test(url);
 };
+export const getQuery = (url: string) => {
+  return new URL(url).search;
+};
