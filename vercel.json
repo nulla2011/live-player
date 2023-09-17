@@ -1,16 +1,16 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "/"
-    },
-    {
       "source": "/ajax/gl",
       "destination": "https://gitlab.com/nulla20111/test/-/raw/main/live.json"
     },
     {
       "source": "/ajax/ge",
       "destination": "https://gitee.com/millionlive/files/raw/master/live.json"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
     }
   ]
 }
