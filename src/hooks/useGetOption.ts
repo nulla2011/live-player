@@ -4,34 +4,26 @@ import artplayPluginQuality from '../plugin/artplayPluginQuality';
 import { isFlv, isHls } from '../utils';
 import { playFlv, playHls } from '../utils/initVideoCore';
 
-export default () => {
+export default (data: api | undefined) => {
   const { id } = useParams();
-  const env = import.meta.env;
-  const keyList: string[] = [];
-  for (const key in env) {
-    if (Object.prototype.hasOwnProperty.call(env, key) && key.startsWith('VITE_URL_' + id!)) {
-      keyList.push(key);
-    }
-  }
+  if (!data) return null;
+  const urls = data[id!];
   const quality: quality[] = [];
-  keyList
-    .filter((key) => key.startsWith('VITE_URL_' + id! + '_'))
-    .forEach((key) => {
+  let url = '';
+  let singleM3u8 = false;
+  if (typeof urls === 'object') {
+    Object.entries(urls).forEach(([k, v]) => {
       quality.push({
-        html: key.split('_')[3],
-        url: env[key] as string,
+        html: k,
+        url: v,
       });
     });
-  let url = '';
-  let singleStream = false;
-  if (keyList.includes('VITE_URL_' + id!)) {
-    url = env['VITE_URL_' + id!] as string;
-    singleStream = true;
-  }
-  if (quality.length > 0) {
     quality.sort((a, b) => parseInt(b.html) - parseInt(a.html));
     url = quality[0].url;
     // quality[0].default = true;
+  } else {
+    url = urls;
+    singleM3u8 = true;
   }
   const option = {
     url,
@@ -59,7 +51,7 @@ export default () => {
     plugins: [
       artplayerPluginHlsQuality({
         // Show quality in control
-        control: singleStream,
+        control: singleM3u8,
         // Show quality in setting
         setting: true,
         // Get the resolution text from level

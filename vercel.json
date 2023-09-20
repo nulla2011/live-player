@@ -1,12 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/ajax/gl",
-      "destination": "https://gitlab.com/nulla20111/test/-/raw/main/live.json"
-    },
-    {
-      "source": "/ajax/ge",
-      "destination": "https://gitee.com/millionlive/files/raw/master/live.json"
+      "source": "/contents/gl",
+      "destination": "https://gitlab.com/live-streams1/streams/-/raw/master/index.json"
     },
     {
       "source": "/(.*)",

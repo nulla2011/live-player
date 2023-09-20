@@ -8,3 +8,6 @@ interface quality {
   url: string;
   default?: boolean;
 }
+interface api {
+  [key: string | number]: string | Record<string, string>;
+}
