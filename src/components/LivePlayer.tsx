@@ -1,5 +1,6 @@
 import Spinner from 'react-spinner-material';
 import Aplayer from './ArtPlayer.js';
+import Congratulations from './Congratulations';
 import useGetOption from '../hooks/useGetOption.js';
 import useFetch from '../hooks/useFetch.js';
 import './LivePlayer.css';
@@ -21,8 +22,12 @@ export default function LivePlayer() {
       </div>
     );
   } else if (data) {
-    return (
-      <Aplayer option={option!} className="fullPage" getInstance={(art) => console.info(art)} />
-    );
+    if (!option) {
+      return <Congratulations />;
+    } else {
+      return (
+        <Aplayer option={option!} className="fullPage" getInstance={(art) => console.info(art)} />
+      );
+    }
   } else return null;
 }

@@ -8,6 +8,7 @@ export default (data: api | undefined) => {
   const { id } = useParams();
   if (!data) return null;
   const urls = data[id!];
+  if (!urls) return null;
   const quality: quality[] = [];
   let url = '';
   let singleM3u8 = false;
