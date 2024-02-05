@@ -8,3 +8,4 @@ interface quality {
   url: string;
   default?: boolean;
 }
+type URLs = string | Record<string, string>;
