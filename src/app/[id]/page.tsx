@@ -31,9 +31,22 @@ export default async function Room({ params }: { params: { id: string } }) {
     }
     return (
       <>
-        <Script src="https://cdn.staticfile.org/artplayer/5.0.9/artplayer.js" />
-        {includesHls && <Script src="https://cdn.staticfile.org/hls.js/1.4.9/hls.min.js" />}
-        {includesFlv && <Script src="https://cdn.staticfile.org/flv.js/1.6.2/flv.min.js" />}
+        <Script
+          src="https://cdn.staticfile.org/artplayer/5.0.9/artplayer.js"
+          strategy="beforeInteractive"
+        />
+        {includesHls && (
+          <Script
+            src="https://cdn.staticfile.org/hls.js/1.4.9/hls.min.js"
+            strategy="beforeInteractive"
+          />
+        )}
+        {includesFlv && (
+          <Script
+            src="https://cdn.staticfile.org/flv.js/1.6.2/flv.min.js"
+            strategy="beforeInteractive"
+          />
+        )}
         <LivePlayer urls={urls} id={id} />
       </>
     );

@@ -3,7 +3,7 @@ import artplayPluginQuality from '../plugin/artplayPluginQuality';
 import { isFlv, isHls } from '../utils';
 import { playHls, playFlv } from '../utils/initVideoCore';
 
-export default function getOption(urls: URLs, id: string) {
+export const getOption = (urls: URLs, id: string) => {
   const quality: quality[] = [];
   let url = '';
   let singleM3u8 = false;
@@ -65,4 +65,4 @@ export default function getOption(urls: URLs, id: string) {
     ],
   };
   return option;
-}
+};

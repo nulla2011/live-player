@@ -1,4 +1,4 @@
-export default (options: quality[], roomID: string) => {
+export default function artplayerQuality(options: quality[], roomID: string) {
   return (art: patchedArtplayer) => {
     art.storage.name = roomID;
     const storageQuality = art.storage.get('quality') as string;
@@ -31,4 +31,4 @@ export default (options: quality[], roomID: string) => {
       art.url = options[0].url;
     }
   };
-};
+}

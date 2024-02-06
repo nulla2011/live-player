@@ -14,16 +14,6 @@ export const playFlv = (video: HTMLMediaElement, url: string, art: patchedArtpla
     art.notice.show = 'Unsupported playback format: flv';
   }
 };
-// class Loader extends Hls.DefaultConfig.loader {
-//   constructor(config: HlsConfig) {
-//     super(config);
-//     const load = this.load.bind(this);
-//     this.load = (context, config, callbacks) => {
-//       console.log(context.url);
-//       load(context, config, callbacks);
-//     };
-//   }
-// }
 export const playHls = (video: HTMLMediaElement, url: string, art: patchedArtplayer) => {
   if (Hls.isSupported()) {
     if (art.hls) art.hls.destroy();
