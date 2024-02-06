@@ -1,7 +1,7 @@
 import artplayerPluginHlsQuality from 'artplayer-plugin-hls-quality';
 import artplayPluginQuality from '../plugin/artplayPluginQuality';
 import { isFlv, isHls } from '../utils';
-import { playHls, playFlv } from '../utils/initVideoCore';
+import { playFlv, playHls } from '../utils/initVideoCore';
 
 export const getOption = (urls: URLs, id: string) => {
   const quality: quality[] = [];
@@ -21,11 +21,17 @@ export const getOption = (urls: URLs, id: string) => {
     url = urls;
     singleM3u8 = true;
   }
+  let customType = {};
+  if (isHls(url)) {
+    customType = { m3u8: playHls };
+  } else if (isFlv(url)) {
+    customType = { flv: playFlv };
+  }
   const option = {
     url,
     // ...(quality.length > 0 ? { quality } : {}),
     // type: isHls(url) ? 'm3u8' : isFlv(url) ? 'flv' : '',
-    customType: isHls(url) ? { m3u8: playHls } : isFlv(url) ? { flv: playFlv } : {},
+    customType,
     pip: true,
     screenshot: true,
     setting: true,

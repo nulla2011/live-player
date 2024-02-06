@@ -11,10 +11,10 @@ interface playerProps {
 export default function Player({ urls, id, getInstance, ...rest }: playerProps) {
   const artRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    let art;
+    let art: Artplayer;
     const initArt = async () => {
       const { getOption } = await import('@/utils/getOption');
-      const option = getOption(urls, id);
+      const option = await getOption(urls, id);
       art = new Artplayer({
         ...option,
         container: artRef.current!,

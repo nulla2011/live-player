@@ -39,6 +39,7 @@ export default function NotFound() {
   return (
     <>
       {/* <head> */}
+      <style>{'body{color:#fff;background:#242424;margin:0}'}</style>
       <title>404: This page could not be found.</title>
       {/* </head> */}
       <div style={styles.error}>
